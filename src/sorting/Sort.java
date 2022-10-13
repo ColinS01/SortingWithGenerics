@@ -32,7 +32,7 @@ public class Sort {
 
     public static <E extends Comparable<E>> void merge(ArrayList<E> arrayList, int start, int middle, int end){
         int i = start, j = middle;
-        ArrayList<E> tempArrayList = new ArrayList<>(start - end);
+        ArrayList<E> tempArrayList = new ArrayList<>(end - start);
         while (i < middle && j < end){
             if(arrayList.get(i).compareTo(arrayList.get(j)) <= 0){
                 tempArrayList.add(arrayList.get(i));
@@ -61,8 +61,8 @@ public class Sort {
     public static <E extends Comparable<E>> void mergeSort(ArrayList<E> arrayList, int start, int end){
         if (end - start <= 1)return;
         int middle = (start + end) / 2;
-        mergeSort(arrayList, middle, end);
         mergeSort(arrayList, start, middle);
+        mergeSort(arrayList, middle, end);
         merge(arrayList, start, middle, end);
     }
 

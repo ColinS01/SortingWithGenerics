@@ -1,21 +1,59 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
+import person.Student;
 import sorting.Sort;
 
 public class App {
-    public static void main(String[] args) throws Exception {
-            int arrayLength = 5;
-            ArrayList<Integer> arrayList = new ArrayList<>();
-            Random random = new Random();
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable<T>> ArrayList<Student<T>> createRandomArray(int arrayLength, String typeName){
+        ArrayList<Student<T>> arrayList = new ArrayList<>(arrayLength);
+        Random random = new Random();
 
-            for (int i = 0; i < arrayLength; i ++){
-                arrayList.add(random.nextInt(100));
+        for (int i = 0; i < arrayLength; i ++){
+            String id = String.valueOf(i);
+            switch (typeName){
+                case "Integer":
+                arrayList.add((Student<T>) new Student<Integer>(id, random.nextInt(100)));
+                break;
+                case "Float":
+                arrayList.add((Student<T>) new Student<Float>(id, random.nextFloat(100)));
+                break;
+                case "Double":
+                arrayList.add((Student<T>) new Student<Double>(id, random.nextDouble(100)));
+                break;
+                default:
+                System.out.println("Use Integer as data type");
+                arrayList.add((Student<T>)new Student<Integer>(id, random.nextInt(100)));
+
             }
+        }
+
+        return arrayList;
+    }
+    public static <T extends Comparable<T>> void main(String[] args) throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        while (true){
+            System.out.println("Input the array size");
+            int arrayLength = scanner.nextInt();
+            System.out.println("Enter a data type for your grades (Integer, Float, Double");
+            String typeName = scanner.next();
+            ArrayList<Student<T>> arrayList = createRandomArray(arrayLength, typeName);
             System.out.println(arrayList.toString());
-            Sort.bubbleSort(arrayList);
-            System.out.println(arrayList);
+            System.out.println(Sort.isSorted(arrayList));
+            Sort.mergeSort(arrayList);
+            System.out.println(arrayList.toString());
             System.out.println(Sort.isSorted(arrayList));
 
+            System.out.println("Continue? Y/N");
+            String yesNo = scanner.next();
+            if(yesNo.equals("N")){
+                break;
+            }
+            
+
         }
+        scanner.close();
+    }
 }
